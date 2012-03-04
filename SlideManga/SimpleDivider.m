@@ -8,6 +8,8 @@
 
 #import "SimpleDivider.h"
 
+#define loop
+
 @interface SimpleDivider(private)
 - (void)explorePixelAtRow:(int)row Col:(int)col From:(int)dir;
 @end
@@ -38,16 +40,78 @@
     // Draw img in center
     CGContextDrawImage(context,CGRectMake(20,20,_width-40,_height-40),imageRef);
     
-    // Preprocess, mark image pixels to content(1) or background(0). Start with pixel (0,0)
+    // Predefine the border of image
     for (int row = 0; row < _height; ++row) {
         for (int col = 0; col < _width; ++col) {
             NSUInteger index = row * _width + col;
-            // Predefine the border of image
-            if(row < 19 || col < 19 || row >= _height-20 || col >= _width-20) _markData[index] = false;
-            else _markData[index] = true;
+            if(row < 19 || col < 19 || row >= _height-20 || col >= _width-20) _markData[index] = true;
+            else _markData[index] = false;
         }
     }
+    
+    // Preprocess, mark image pixels to content(1) or background(0).
+#pragma Process with recursion
+#ifdef recursion
     [self explorePixelAtRow:19 Col:19 From:0];
+#endif
+
+#pragma Process with loop
+#ifdef loop
+    NSUInteger markId, byteId;
+    int gray;
+    // Loop from top_left to bottom_right
+    for (int row = 19; row < _height-20; ++row) {
+        for (int col = 19; col < _width-20; ++col) {
+            markId = row * _width + col;
+            if(_markData[markId]) continue;
+            byteId = markId * _bytesPerPixel;
+            gray = _rawData[byteId];
+
+            // One pixel marked in the top/left pixel
+            if(gray > 200 && (_markData[markId-1] || _markData[markId-_width]))
+                _markData[markId] = true;
+        }
+    }
+    // Loop from bottom_right to top_left
+    for (int row = _height-21; row >= 19; --row) {
+        for (int col = _width-21; col >= 19; --col) {
+            markId = row * _width + col;
+            if(_markData[markId]) continue;
+            byteId = markId * _bytesPerPixel;
+            gray = _rawData[byteId];
+            
+            // One pixel marked in the bottom/right pixel
+            if(gray > 200 && (_markData[markId+1] || _markData[markId+_width]))
+                _markData[markId] = true;
+        }
+    }
+    // Loop from bottom_left to top_right
+    for (int row = _height-21; row >= 19; --row) {
+        for (int col = 19; col < _width-20; ++col) {
+            markId = row * _width + col;
+            if(_markData[markId]) continue;
+            byteId = markId * _bytesPerPixel;
+            gray = _rawData[byteId];
+            
+            // One pixel marked in the bottom/left pixel
+            if(gray > 200 && (_markData[markId-1] || _markData[markId+_width]))
+                _markData[markId] = true;
+        }
+    }
+    // Loop from top_right to bottom_left
+    for (int row = 19; row < _height-20; ++row) {
+        for (int col = _width-21; col >= 19; --col) {
+            markId = row * _width + col;
+            if(_markData[markId]) continue;
+            byteId = markId * _bytesPerPixel;
+            gray = _rawData[byteId];
+            
+            // One pixel marked in the top/right pixel
+            if(gray > 200 && (_markData[markId+1] || _markData[markId-_width]))
+                _markData[markId] = true;
+        }
+    }
+#endif
     
     // Analyse mark data to find out all the boundaries of manga bloc
     
@@ -56,7 +120,7 @@
     for (int row = 0; row < _height; ++row) {
         for (int col = 0; col < _width; ++col) {
             NSUInteger index = row * _width + col;
-            if(_markData[index]) _rawData[index] = 0;
+            if(!_markData[index]) _rawData[index] = 0;
         }
     }
     
@@ -82,15 +146,15 @@
     NSUInteger markId = (row * _width) + col;
     
     // Pixel marked
-    if(!_markData[markId]) return;
+    if(_markData[markId]) return;
     else {
         NSUInteger byteId = markId * _bytesPerPixel;
         int gray = _rawData[byteId];
     // Pixel considered like a pixel of content, stop the exploring process with this pixel
         if(gray < 200) return;
-    // Pixel background, explore to the 4 neighbour pixels
+    // Pixel background, explore to the 4 neighbor pixels
         else {
-            _markData[markId] = false;
+            _markData[markId] = true;
             _rawData[byteId] = 255;
             // Top pixel
             //if(dir != 0) [self explorePixelAtRow:row-1 Col:col From:2];
