@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA92A89D14FC4B0A00B95BA8 /* SimpleDivider.m in Sources */ = {isa = PBXBuildFile; fileRef = BA92A89C14FC4B0A00B95BA8 /* SimpleDivider.m */; };
+		BA92A89E14FC4B0A00B95BA8 /* SimpleDivider.m in Sources */ = {isa = PBXBuildFile; fileRef = BA92A89C14FC4B0A00B95BA8 /* SimpleDivider.m */; };
+		BA9450E714F904D4009356F2 /* ROIDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = BA9450E614F904D3009356F2 /* ROIDescriptor.m */; };
+		BA9450E814F904D4009356F2 /* ROIDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = BA9450E614F904D3009356F2 /* ROIDescriptor.m */; };
+		BA9450EB14FA535E009356F2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA9450EA14FA535E009356F2 /* QuartzCore.framework */; };
+		BA9450F514FAB3A0009356F2 /* MangaPage.m in Sources */ = {isa = PBXBuildFile; fileRef = BA9450F414FAB3A0009356F2 /* MangaPage.m */; };
+		BA9450F614FAB3A0009356F2 /* MangaPage.m in Sources */ = {isa = PBXBuildFile; fileRef = BA9450F414FAB3A0009356F2 /* MangaPage.m */; };
+		BA94510414FADD36009356F2 /* MangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA94510214FADD36009356F2 /* MangaViewController.m */; };
+		BA94510514FADD36009356F2 /* MangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA94510214FADD36009356F2 /* MangaViewController.m */; };
+		BA94510614FADD36009356F2 /* MangaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA94510314FADD36009356F2 /* MangaViewController.xib */; };
+		BA94510714FADD36009356F2 /* MangaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA94510314FADD36009356F2 /* MangaViewController.xib */; };
 		BAE978CA14F549860004F99D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE978C914F549860004F99D /* UIKit.framework */; };
 		BAE978CC14F549860004F99D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE978CB14F549860004F99D /* Foundation.framework */; };
 		BAE978CE14F549860004F99D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE978CD14F549860004F99D /* CoreGraphics.framework */; };
@@ -22,6 +33,12 @@
 		BAE978F014F549870004F99D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE978CB14F549860004F99D /* Foundation.framework */; };
 		BAE978F814F549870004F99D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BAE978F614F549870004F99D /* InfoPlist.strings */; };
 		BAE978FB14F549870004F99D /* SlideMangaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BAE978FA14F549870004F99D /* SlideMangaTests.m */; };
+		BAE9790B14F54B320004F99D /* Unknown-1.png in Resources */ = {isa = PBXBuildFile; fileRef = BAE9790514F54B320004F99D /* Unknown-1.png */; };
+		BAE9790C14F54B320004F99D /* Unknown-2.png in Resources */ = {isa = PBXBuildFile; fileRef = BAE9790614F54B320004F99D /* Unknown-2.png */; };
+		BAE9790D14F54B320004F99D /* Unknown-3.png in Resources */ = {isa = PBXBuildFile; fileRef = BAE9790714F54B320004F99D /* Unknown-3.png */; };
+		BAE9790E14F54B320004F99D /* Unknown-4.png in Resources */ = {isa = PBXBuildFile; fileRef = BAE9790814F54B320004F99D /* Unknown-4.png */; };
+		BAE9790F14F54B320004F99D /* Unknown-5.png in Resources */ = {isa = PBXBuildFile; fileRef = BAE9790914F54B320004F99D /* Unknown-5.png */; };
+		BAE9791014F54B320004F99D /* Unknown-0.png in Resources */ = {isa = PBXBuildFile; fileRef = BAE9790A14F54B320004F99D /* Unknown-0.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,29 +52,46 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BA92A89B14FC4B0A00B95BA8 /* SimpleDivider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleDivider.h; sourceTree = "<group>"; };
+		BA92A89C14FC4B0A00B95BA8 /* SimpleDivider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleDivider.m; sourceTree = "<group>"; };
+		BA9450E514F904D3009356F2 /* ROIDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROIDescriptor.h; sourceTree = "<group>"; };
+		BA9450E614F904D3009356F2 /* ROIDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROIDescriptor.m; sourceTree = "<group>"; };
+		BA9450EA14FA535E009356F2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BA9450F214FAB30F009356F2 /* MangaDivider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MangaDivider.h; sourceTree = "<group>"; };
+		BA9450F314FAB3A0009356F2 /* MangaPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MangaPage.h; sourceTree = "<group>"; };
+		BA9450F414FAB3A0009356F2 /* MangaPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MangaPage.m; sourceTree = "<group>"; };
+		BA94510114FADD36009356F2 /* MangaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MangaViewController.h; sourceTree = "<group>"; };
+		BA94510214FADD36009356F2 /* MangaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MangaViewController.m; sourceTree = "<group>"; };
+		BA94510314FADD36009356F2 /* MangaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MangaViewController.xib; sourceTree = "<group>"; };
 		BAE978C514F549860004F99D /* SlideManga.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlideManga.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE978C914F549860004F99D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BAE978CB14F549860004F99D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BAE978CD14F549860004F99D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		BAE978D114F549860004F99D /* SlideManga-Info.plist */ = {isa = PBXFileReference; path = "SlideManga-Info.plist"; sourceTree = "<group>"; };
+		BAE978D114F549860004F99D /* SlideManga-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SlideManga-Info.plist"; sourceTree = "<group>"; };
 		BAE978D314F549860004F99D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BAE978D514F549860004F99D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BAE978D714F549860004F99D /* SlideManga-Prefix.pch */ = {isa = PBXFileReference; path = "SlideManga-Prefix.pch"; sourceTree = "<group>"; };
-		BAE978D814F549860004F99D /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		BAE978D714F549860004F99D /* SlideManga-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SlideManga-Prefix.pch"; sourceTree = "<group>"; };
+		BAE978D814F549860004F99D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BAE978D914F549860004F99D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BAE978DB14F549860004F99D /* RootViewController.h */ = {isa = PBXFileReference; path = RootViewController.h; sourceTree = "<group>"; };
+		BAE978DB14F549860004F99D /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		BAE978DC14F549860004F99D /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		BAE978DE14F549860004F99D /* DataViewController.h */ = {isa = PBXFileReference; path = DataViewController.h; sourceTree = "<group>"; };
+		BAE978DE14F549860004F99D /* DataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
 		BAE978DF14F549860004F99D /* DataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
-		BAE978E114F549860004F99D /* ModelController.h */ = {isa = PBXFileReference; path = ModelController.h; sourceTree = "<group>"; };
+		BAE978E114F549860004F99D /* ModelController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
 		BAE978E214F549860004F99D /* ModelController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
 		BAE978E514F549860004F99D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		BAE978EC14F549870004F99D /* SlideMangaTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SlideMangaTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE978ED14F549870004F99D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		BAE978F514F549870004F99D /* SlideMangaTests-Info.plist */ = {isa = PBXFileReference; path = "SlideMangaTests-Info.plist"; sourceTree = "<group>"; };
+		BAE978F514F549870004F99D /* SlideMangaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SlideMangaTests-Info.plist"; sourceTree = "<group>"; };
 		BAE978F714F549870004F99D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		BAE978F914F549870004F99D /* SlideMangaTests.h */ = {isa = PBXFileReference; path = SlideMangaTests.h; sourceTree = "<group>"; };
+		BAE978F914F549870004F99D /* SlideMangaTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlideMangaTests.h; sourceTree = "<group>"; };
 		BAE978FA14F549870004F99D /* SlideMangaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlideMangaTests.m; sourceTree = "<group>"; };
+		BAE9790514F54B320004F99D /* Unknown-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Unknown-1.png"; sourceTree = "<group>"; };
+		BAE9790614F54B320004F99D /* Unknown-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Unknown-2.png"; sourceTree = "<group>"; };
+		BAE9790714F54B320004F99D /* Unknown-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Unknown-3.png"; sourceTree = "<group>"; };
+		BAE9790814F54B320004F99D /* Unknown-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Unknown-4.png"; sourceTree = "<group>"; };
+		BAE9790914F54B320004F99D /* Unknown-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Unknown-5.png"; sourceTree = "<group>"; };
+		BAE9790A14F54B320004F99D /* Unknown-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Unknown-0.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA9450EB14FA535E009356F2 /* QuartzCore.framework in Frameworks */,
 				BAE978CA14F549860004F99D /* UIKit.framework in Frameworks */,
 				BAE978CC14F549860004F99D /* Foundation.framework in Frameworks */,
 				BAE978CE14F549860004F99D /* CoreGraphics.framework in Frameworks */,
@@ -106,6 +141,7 @@
 		BAE978C814F549860004F99D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BA9450EA14FA535E009356F2 /* QuartzCore.framework */,
 				BAE978C914F549860004F99D /* UIKit.framework */,
 				BAE978CB14F549860004F99D /* Foundation.framework */,
 				BAE978CD14F549860004F99D /* CoreGraphics.framework */,
@@ -117,6 +153,7 @@
 		BAE978CF14F549860004F99D /* SlideManga */ = {
 			isa = PBXGroup;
 			children = (
+				BAE9790414F54AEC0004F99D /* src */,
 				BAE978D814F549860004F99D /* AppDelegate.h */,
 				BAE978D914F549860004F99D /* AppDelegate.m */,
 				BAE978DB14F549860004F99D /* RootViewController.h */,
@@ -127,6 +164,16 @@
 				BAE978E214F549860004F99D /* ModelController.m */,
 				BAE978E414F549860004F99D /* MainStoryboard.storyboard */,
 				BAE978D014F549860004F99D /* Supporting Files */,
+				BA9450E514F904D3009356F2 /* ROIDescriptor.h */,
+				BA9450E614F904D3009356F2 /* ROIDescriptor.m */,
+				BA9450F214FAB30F009356F2 /* MangaDivider.h */,
+				BA92A89B14FC4B0A00B95BA8 /* SimpleDivider.h */,
+				BA92A89C14FC4B0A00B95BA8 /* SimpleDivider.m */,
+				BA9450F314FAB3A0009356F2 /* MangaPage.h */,
+				BA9450F414FAB3A0009356F2 /* MangaPage.m */,
+				BA94510114FADD36009356F2 /* MangaViewController.h */,
+				BA94510214FADD36009356F2 /* MangaViewController.m */,
+				BA94510314FADD36009356F2 /* MangaViewController.xib */,
 			);
 			path = SlideManga;
 			sourceTree = "<group>";
@@ -159,6 +206,19 @@
 				BAE978F614F549870004F99D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BAE9790414F54AEC0004F99D /* src */ = {
+			isa = PBXGroup;
+			children = (
+				BAE9790A14F54B320004F99D /* Unknown-0.png */,
+				BAE9790514F54B320004F99D /* Unknown-1.png */,
+				BAE9790614F54B320004F99D /* Unknown-2.png */,
+				BAE9790714F54B320004F99D /* Unknown-3.png */,
+				BAE9790814F54B320004F99D /* Unknown-4.png */,
+				BAE9790914F54B320004F99D /* Unknown-5.png */,
+			);
+			name = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +293,13 @@
 			files = (
 				BAE978D414F549860004F99D /* InfoPlist.strings in Resources */,
 				BAE978E614F549860004F99D /* MainStoryboard.storyboard in Resources */,
+				BAE9790B14F54B320004F99D /* Unknown-1.png in Resources */,
+				BAE9790C14F54B320004F99D /* Unknown-2.png in Resources */,
+				BAE9790D14F54B320004F99D /* Unknown-3.png in Resources */,
+				BAE9790E14F54B320004F99D /* Unknown-4.png in Resources */,
+				BAE9790F14F54B320004F99D /* Unknown-5.png in Resources */,
+				BAE9791014F54B320004F99D /* Unknown-0.png in Resources */,
+				BA94510614FADD36009356F2 /* MangaViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAE978F814F549870004F99D /* InfoPlist.strings in Resources */,
+				BA94510714FADD36009356F2 /* MangaViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +340,10 @@
 				BAE978DD14F549860004F99D /* RootViewController.m in Sources */,
 				BAE978E014F549860004F99D /* DataViewController.m in Sources */,
 				BAE978E314F549860004F99D /* ModelController.m in Sources */,
+				BA9450E714F904D4009356F2 /* ROIDescriptor.m in Sources */,
+				BA9450F514FAB3A0009356F2 /* MangaPage.m in Sources */,
+				BA94510414FADD36009356F2 /* MangaViewController.m in Sources */,
+				BA92A89D14FC4B0A00B95BA8 /* SimpleDivider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +352,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAE978FB14F549870004F99D /* SlideMangaTests.m in Sources */,
+				BA9450E814F904D4009356F2 /* ROIDescriptor.m in Sources */,
+				BA9450F614FAB3A0009356F2 /* MangaPage.m in Sources */,
+				BA94510514FADD36009356F2 /* MangaViewController.m in Sources */,
+				BA92A89E14FC4B0A00B95BA8 /* SimpleDivider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +517,7 @@
 				BAE9790014F549870004F99D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BAE9790114F549870004F99D /* Build configuration list for PBXNativeTarget "SlideMangaTests" */ = {
 			isa = XCConfigurationList;
@@ -449,6 +526,7 @@
 				BAE9790314F549870004F99D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

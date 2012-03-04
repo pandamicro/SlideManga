@@ -3,7 +3,7 @@
 //  SlideManga
 //
 //  Created by LING HUABIN on 22/02/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 pandamicro.co.cc All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

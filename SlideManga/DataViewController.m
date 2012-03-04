@@ -3,15 +3,15 @@
 //  SlideManga
 //
 //  Created by LING HUABIN on 22/02/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 pandamicro.co.cc All rights reserved.
 //
 
 #import "DataViewController.h"
 
 @implementation DataViewController
 
-@synthesize dataLabel = _dataLabel;
-@synthesize dataObject = _dataObject;
+@synthesize imgView = _imgView;
+@synthesize img = _img;
 
 - (void)didReceiveMemoryWarning
 {
@@ -23,21 +23,20 @@
 
 - (void)viewDidLoad
 {
+    _imgView = [[UIImageView alloc] initWithImage:_img];
+    [self.view addSubview:_imgView];
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    _imgView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.dataLabel.text = [self.dataObject description];
 }
 
 - (void)viewDidAppear:(BOOL)animated
