@@ -16,6 +16,7 @@
     NSUInteger _bytesPerPixel;
     unsigned char* _rawData;
     bool* _markData;
+    NSArray* _blobs;
 }
 
 @property(nonatomic, retain) UIImage* resImage;

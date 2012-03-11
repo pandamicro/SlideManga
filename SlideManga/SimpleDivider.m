@@ -48,6 +48,8 @@ enum Relation {
 @interface Blob : NSObject {
 @private
     NSMutableArray* _profils;
+    BOOL            _boxInvalid;
+    CGRect          _boundingBox;
 }
 
 @property BOOL connected;
@@ -72,6 +74,8 @@ enum Relation {
 - (id)initWithProfil:(Profil*)profil {
     self = [super init];
     if (self) {
+        _boxInvalid = true;
+        _boundingBox = CGRectZero;
         _profils = [NSMutableArray arrayWithCapacity:300];
         [self addProfil:profil];
     }
@@ -80,6 +84,7 @@ enum Relation {
 
 - (void)addProfil:(Profil*)profil {
     _connected = true;
+    _boxInvalid = true;
     // Register the blob owner in profil
     profil.pblob = self;
     for (int i = 0; i < [_profils count]; ++i) {
@@ -96,11 +101,14 @@ enum Relation {
 
 - (int)checkConnect:(Profil*)profil {
     int res = LEFT;
-    Profil* curr = [_profils objectAtIndex:[_profils count]-1];
+    int size = [_profils count];
+    if (size <= 0) return res;
     // Compare the last profils in this blob
-    for (int i = [_profils count]-1; abs(curr.oy-profil.oy) <= 1; --i) {
+    for (int i = size-1; i>=0; --i) {
+        Profil* curr = [_profils objectAtIndex:i];
+        if (abs(curr.oy-profil.oy) > 1) break;
         // Connect
-        if (!(curr.ox > profil.ox+profil.width || profil.ox > curr.ox+curr.width)) {
+        if (curr.ox <= profil.ox+profil.width && profil.ox <= curr.ox+curr.width) {
             return CONNECT;
         }
         else if (curr.ox > profil.ox+profil.width) {
@@ -111,13 +119,14 @@ enum Relation {
 }
 
 - (void)combien:(Profil*)profil {
-    _connected = true;
     // Profil individuel
     if(profil.pblob == nil) {
         [self addProfil:profil];
     }
     // Profil in a blob, combien with the whole blob (in order)
     else {
+        _connected = true;
+        _boxInvalid = true;
         NSArray* tars = [profil.pblob profils];
         Profil* tar = [tars objectAtIndex:0];
         int i,j;
@@ -142,14 +151,17 @@ enum Relation {
 }
 
 - (CGRect)getBoundingBox {
-    NSInteger minx = NSIntegerMax, maxx = NSIntegerMin, miny = NSIntegerMax, maxy = NSIntegerMin;
-    for (Profil* p in _profils) {
-        if (p.ox < minx) minx = p.ox;
-        if (p.oy < miny) miny = p.oy;
-        if (p.ox+p.width > maxx) maxx = p.ox+p.width;
-        if (p.oy > maxy) maxy = p.oy;
+    if (_boxInvalid) {
+        NSInteger minx = NSIntegerMax, maxx = NSIntegerMin, miny = NSIntegerMax, maxy = NSIntegerMin;
+        for (Profil* p in _profils) {
+            if (p.ox < minx) minx = p.ox;
+            if (p.oy < miny) miny = p.oy;
+            if (p.ox+p.width > maxx) maxx = p.ox+p.width;
+            if (p.oy > maxy) maxy = p.oy;
+        }
+        _boundingBox = CGRectMake(minx, miny, maxx-minx, maxy-miny);
     }
-    return CGRectMake(minx, miny, maxx-minx, maxy-miny);
+    return _boundingBox;
 }
 - (NSInteger)boundingBoxSurface {
     CGRect box = [self getBoundingBox];
@@ -176,8 +188,10 @@ enum Relation {
     CGImageRef imageRef = [img CGImage];
     NSUInteger originW = CGImageGetWidth(imageRef);
     NSUInteger originH = CGImageGetHeight(imageRef);
-    _width = 1040;
-    _height = ((float)1000/originW)*originH + 40;
+    float surface = 800*600;
+    float r = sqrt(surface / (originW*originH));
+    _width = r * originW;
+    _height = r * originH;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
     _bytesPerPixel = 1;
     _rawData = malloc(_height*_width*_bytesPerPixel);
@@ -187,26 +201,26 @@ enum Relation {
     CGContextRef context = CGBitmapContextCreate(_rawData,_width,_height,
                                               bitsPerComponent,bytesPerRow,colorSpace,
                                               kCGImageAlphaNone);
-    
+
     // Draw white background
     CGContextSetGrayFillColor(context, 1, 1);
     CGContextFillRect(context, CGRectMake(0, 0, _width, _height));
     // Draw img in center
-    CGContextDrawImage(context,CGRectMake(20,20,_width-40,_height-40),imageRef);
-    
+    CGContextDrawImage(context,CGRectMake(5,5,_width-10,_height-10),imageRef);
+
     // Predefine the border of image
     for (int row = 0; row < _height; ++row) {
         for (int col = 0; col < _width; ++col) {
             NSUInteger index = row * _width + col;
-            if(row < 19 || col < 19 || row >= _height-20 || col >= _width-20) _markData[index] = true;
+            if(row < 9 || col < 9 || row >= _height-5 || col >= _width-5) _markData[index] = true;
             else _markData[index] = false;
         }
     }
-    
+
     // Preprocess, mark image pixels to content(1) or background(0).
 #pragma Process with recursion
 #ifdef recursion
-    [self explorePixelAtRow:19 Col:19 From:0];
+    [self explorePixelAtRow:9 Col:9 From:0];
 #endif
 
 #pragma Process with loop
@@ -214,8 +228,8 @@ enum Relation {
     NSUInteger markId, byteId;
     int gray;
     // Loop from top_left to bottom_right
-    for (int row = 19; row < _height-20; ++row) {
-        for (int col = 19; col < _width-20; ++col) {
+    for (int row = 4; row < _height-5; ++row) {
+        for (int col = 4; col < _width-5; ++col) {
             markId = row * _width + col;
             if(_markData[markId]) continue;
             byteId = markId * _bytesPerPixel;
@@ -227,8 +241,8 @@ enum Relation {
         }
     }
     // Loop from bottom_right to top_left
-    for (int row = _height-21; row >= 19; --row) {
-        for (int col = _width-21; col >= 19; --col) {
+    for (int row = _height-6; row >= 4; --row) {
+        for (int col = _width-6; col >= 4; --col) {
             markId = row * _width + col;
             if(_markData[markId]) continue;
             byteId = markId * _bytesPerPixel;
@@ -240,8 +254,8 @@ enum Relation {
         }
     }
     // Loop from bottom_left to top_right
-    for (int row = _height-21; row >= 19; --row) {
-        for (int col = 19; col < _width-20; ++col) {
+    for (int row = _height-6; row >= 4; --row) {
+        for (int col = 4; col < _width-5; ++col) {
             markId = row * _width + col;
             if(_markData[markId]) continue;
             byteId = markId * _bytesPerPixel;
@@ -253,8 +267,8 @@ enum Relation {
         }
     }
     // Loop from top_right to bottom_left
-    for (int row = 19; row < _height-20; ++row) {
-        for (int col = _width-21; col >= 19; --col) {
+    for (int row = 4; row < _height-5; ++row) {
+        for (int col = _width-6; col >= 4; --col) {
             markId = row * _width + col;
             if(_markData[markId]) continue;
             byteId = markId * _bytesPerPixel;
@@ -282,8 +296,17 @@ enum Relation {
     CGContextRef ctxTest = CGBitmapContextCreate(_rawData,320,480,
                                                  bitsPerComponent,_bytesPerPixel*320,colorSpace,
                                                  kCGImageAlphaNone);
-    
+    // Draw Test Image
     CGContextDrawImage(ctxTest,CGRectMake(0,0,320,480),CGBitmapContextCreateImage(context));
+    float rx = 320.0/_width, ry = 480.0/_height;
+    CGContextSetGrayStrokeColor(ctxTest, 0.5, 1);
+    for (Blob* blob in _blobs) {
+        CGRect box = [blob getBoundingBox];
+        int w = box.size.width*rx, h = box.size.height*ry;
+        int x = box.origin.x*rx, y = 480-box.origin.y*ry-h;
+        CGContextStrokeRect(ctxTest, CGRectMake(x, y, w, h));
+    }
+    
     imageRef = CGBitmapContextCreateImage(ctxTest);
     _resImage = [UIImage imageWithCGImage:imageRef];
     
@@ -327,10 +350,12 @@ enum Relation {
 - (void)analyzeBoundaries {
     NSMutableArray* liveBlobs = [NSMutableArray arrayWithCapacity:50];
     NSMutableArray* fixedBlobs = [NSMutableArray arrayWithCapacity:10];
+    int seuil = _width*_height/15;
     for (int row = 0; row < _height; ++row) {
         // Mark all live blobs to unchecked
         for (Blob* blob in liveBlobs)
             blob.connected = false;
+        int i = 0;
         
         for (int col = 0; col < _width; ++col) {
             NSUInteger index = row * _width + col;
@@ -351,8 +376,11 @@ enum Relation {
                     continue;
                 }
                 
+                // Roll back one blob to check new profil connectivity
+                if (i > 0) --i;
                 // Check connectivity
-                for (Blob* blob in liveBlobs) {
+                for (; i < [liveBlobs count]; ++i) {
+                    Blob* blob = [liveBlobs objectAtIndex:i];
                     int relation = [blob checkConnect:curr];
                     // Blob at the right of the profil, no need to proceed any further
                     if (relation == RIGHT) {
@@ -369,7 +397,8 @@ enum Relation {
                         [blob combien:curr];
                         // Already connected with another blob, delete it
                         if (old != nil) {
-                            [liveBlobs delete:old];
+                            [liveBlobs removeObject:old];
+                            --i;
                         }
                     }
                 }
@@ -377,16 +406,18 @@ enum Relation {
         }
         
         // Verification for all unchecked live blobs, kill it or put it in the fixed blobs list
-        for (Blob* blob in liveBlobs) {
-            if(!blob.connected) {
-                // If blob too small, ignore it
-                if([blob boundingBoxSurface] >= 900) 
+        for (int j = 0; j < [liveBlobs count]; ++j) {
+            Blob* blob = [liveBlobs objectAtIndex:j];
+            if(!blob.connected || row == _height-1) {
+                // If blob small than seuil, ignore it
+                if([blob boundingBoxSurface] >= seuil) 
                     [fixedBlobs addObject:blob];
                 // Remove from live blobs list
-                [liveBlobs delete:blob];
+                [liveBlobs removeObjectAtIndex:(j--)];
             }
         }
     }
+    _blobs = [NSArray arrayWithArray:fixedBlobs];
 }
 
 @end
