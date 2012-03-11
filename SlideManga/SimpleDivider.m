@@ -10,8 +10,162 @@
 
 #define loop
 
+enum Relation {
+    LEFT = 1,
+    CONNECT = 2,
+    RIGHT = 3
+    };
+
+@class Blob;
+
+@interface Profil : NSObject
+
+@property (nonatomic, assign) int ox;
+@property (nonatomic, assign) int oy;
+@property (nonatomic, assign) int width;
+@property (nonatomic, retain) Blob* pblob;
+
+- (id)initWithPointOx:(int)x Oy:(int)y andWidth:(int)width;
+
+@end
+
+@implementation Profil
+@synthesize ox=_ox, oy=_oy, width=_width, pblob;
+
+- (id)initWithPointOx:(int)x Oy:(int)y andWidth:(int)width {
+    self = [super init];
+    if (self) {
+        _ox = x;
+        _oy = y;
+        _width = width;
+        pblob = nil;
+    }
+    return self;
+}
+@end
+
+
+@interface Blob : NSObject {
+@private
+    NSMutableArray* _profils;
+}
+
+@property BOOL connected;
+
+- (id)initWithProfil:(Profil*)profil;
+
+- (void)addProfil:(Profil*)profil;
+- (NSArray*)profils;
+
+- (int)checkConnect:(Profil*)profil;
+- (void)combien:(Profil*)profil;
+
+- (CGRect)getBoundingBox;
+- (NSInteger)boundingBoxSurface;
+
+@end
+
+@implementation Blob
+
+@synthesize connected = _connected;
+
+- (id)initWithProfil:(Profil*)profil {
+    self = [super init];
+    if (self) {
+        _profils = [NSMutableArray arrayWithCapacity:300];
+        [self addProfil:profil];
+    }
+    return self;
+}
+
+- (void)addProfil:(Profil*)profil {
+    _connected = true;
+    // Register the blob owner in profil
+    profil.pblob = self;
+    for (int i = 0; i < [_profils count]; ++i) {
+        if (profil.oy < [[_profils objectAtIndex:i] oy]) {
+            [_profils insertObject:profil atIndex:i];
+            return;
+        }
+    }
+    [_profils addObject:profil];
+}
+- (NSArray*)profils {
+    return [NSArray arrayWithArray:_profils];
+}
+
+- (int)checkConnect:(Profil*)profil {
+    int res = LEFT;
+    Profil* curr = [_profils objectAtIndex:[_profils count]-1];
+    // Compare the last profils in this blob
+    for (int i = [_profils count]-1; abs(curr.oy-profil.oy) <= 1; --i) {
+        // Connect
+        if (!(curr.ox > profil.ox+profil.width || profil.ox > curr.ox+curr.width)) {
+            return CONNECT;
+        }
+        else if (curr.ox > profil.ox+profil.width) {
+            res = RIGHT;
+        }
+    }
+    return res;
+}
+
+- (void)combien:(Profil*)profil {
+    _connected = true;
+    // Profil individuel
+    if(profil.pblob == nil) {
+        [self addProfil:profil];
+    }
+    // Profil in a blob, combien with the whole blob (in order)
+    else {
+        NSArray* tars = [profil.pblob profils];
+        Profil* tar = [tars objectAtIndex:0];
+        int i,j;
+        int tarSize = [tars count];
+        for (i = 0, j = 0; i < [_profils count]; ++i) {
+            int curry = [[_profils objectAtIndex:i] oy];
+            while (tar.oy < curry) {
+                tar.pblob = self;
+                [_profils insertObject:tar atIndex:i];
+                ++j;
+                if(j < tarSize) tar = [tars objectAtIndex:j];
+                else return;
+            }
+        }
+        
+        for (; j < tarSize; ++j) {
+            tar = [tars objectAtIndex:j];
+            tar.pblob = self;
+            [_profils addObject:tar];
+        }
+    }
+}
+
+- (CGRect)getBoundingBox {
+    NSInteger minx = NSIntegerMax, maxx = NSIntegerMin, miny = NSIntegerMax, maxy = NSIntegerMin;
+    for (Profil* p in _profils) {
+        if (p.ox < minx) minx = p.ox;
+        if (p.oy < miny) miny = p.oy;
+        if (p.ox+p.width > maxx) maxx = p.ox+p.width;
+        if (p.oy > maxy) maxy = p.oy;
+    }
+    return CGRectMake(minx, miny, maxx-minx, maxy-miny);
+}
+- (NSInteger)boundingBoxSurface {
+    CGRect box = [self getBoundingBox];
+    return box.size.width * box.size.height;
+}
+
+@end
+
+
+
+
+
+
 @interface SimpleDivider(private)
 - (void)explorePixelAtRow:(int)row Col:(int)col From:(int)dir;
+- (void)analyzeBoundaries;
 @end
 
 @implementation SimpleDivider
@@ -68,7 +222,7 @@
             gray = _rawData[byteId];
 
             // One pixel marked in the top/left pixel
-            if(gray > 200 && (_markData[markId-1] || _markData[markId-_width]))
+            if(gray > 220 && (_markData[markId-1] || _markData[markId-_width]))
                 _markData[markId] = true;
         }
     }
@@ -81,7 +235,7 @@
             gray = _rawData[byteId];
             
             // One pixel marked in the bottom/right pixel
-            if(gray > 200 && (_markData[markId+1] || _markData[markId+_width]))
+            if(gray > 220 && (_markData[markId+1] || _markData[markId+_width]))
                 _markData[markId] = true;
         }
     }
@@ -94,7 +248,7 @@
             gray = _rawData[byteId];
             
             // One pixel marked in the bottom/left pixel
-            if(gray > 200 && (_markData[markId-1] || _markData[markId+_width]))
+            if(gray > 220 && (_markData[markId-1] || _markData[markId+_width]))
                 _markData[markId] = true;
         }
     }
@@ -107,13 +261,14 @@
             gray = _rawData[byteId];
             
             // One pixel marked in the top/right pixel
-            if(gray > 200 && (_markData[markId+1] || _markData[markId-_width]))
+            if(gray > 220 && (_markData[markId+1] || _markData[markId-_width]))
                 _markData[markId] = true;
         }
     }
 #endif
     
     // Analyse mark data to find out all the boundaries of manga bloc
+    [self analyzeBoundaries];
     
     // For test
     // Set all content pixel to black
@@ -165,6 +320,71 @@
             // Left pixel
             if(dir != 3) [self explorePixelAtRow:row Col:col-1 From:1];
             return;
+        }
+    }
+}
+
+- (void)analyzeBoundaries {
+    NSMutableArray* liveBlobs = [NSMutableArray arrayWithCapacity:50];
+    NSMutableArray* fixedBlobs = [NSMutableArray arrayWithCapacity:10];
+    for (int row = 0; row < _height; ++row) {
+        // Mark all live blobs to unchecked
+        for (Blob* blob in liveBlobs)
+            blob.connected = false;
+        
+        for (int col = 0; col < _width; ++col) {
+            NSUInteger index = row * _width + col;
+            // Content profil start point found, construction of profil and check connectivity with active blobs
+            if(!_markData[index]) {
+                int width = 1, ox = col, oy = row;
+                // Determing the width of profil
+                while ((++col) < _width && !_markData[row*_width+col]) {
+                    width++;
+                }
+                // Create profil
+                Profil* curr = [[Profil alloc] initWithPointOx:ox Oy:oy andWidth:width];
+                
+                // First profil, automatically create the blob
+                if ([liveBlobs count] == 0) {
+                    Blob* newblob = [[Blob alloc] initWithProfil:curr];
+                    [liveBlobs addObject:newblob];
+                    continue;
+                }
+                
+                // Check connectivity
+                for (Blob* blob in liveBlobs) {
+                    int relation = [blob checkConnect:curr];
+                    // Blob at the right of the profil, no need to proceed any further
+                    if (relation == RIGHT) {
+                        // No connection, create a new blob
+                        if (curr.pblob == nil) {
+                            Blob* newblob = [[Blob alloc] initWithProfil:curr];
+                            [liveBlobs insertObject:newblob atIndex:[liveBlobs indexOfObject:blob]];
+                        }
+                        break;
+                    }
+                    // Blob connecting with profil
+                    else if (relation == CONNECT) {
+                        Blob* old = curr.pblob;
+                        [blob combien:curr];
+                        // Already connected with another blob, delete it
+                        if (old != nil) {
+                            [liveBlobs delete:old];
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Verification for all unchecked live blobs, kill it or put it in the fixed blobs list
+        for (Blob* blob in liveBlobs) {
+            if(!blob.connected) {
+                // If blob too small, ignore it
+                if([blob boundingBoxSurface] >= 900) 
+                    [fixedBlobs addObject:blob];
+                // Remove from live blobs list
+                [liveBlobs delete:blob];
+            }
         }
     }
 }
