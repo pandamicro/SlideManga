@@ -65,11 +65,28 @@ enum Relation {
 - (CGRect)getBoundingBox;
 - (NSInteger)boundingBoxSurface;
 
+NSInteger profilSort(Profil* p1, Profil* p2, void *context);
+
 @end
 
 @implementation Blob
 
 @synthesize connected = _connected;
+
+NSInteger profilSort(Profil* p1, Profil* p2, void *context)
+{
+    int x1 = p1.ox, y1 = p1.oy;
+    int x2 = p2.ox, y2 = p2.oy;
+    if (y1 < y2)
+        return NSOrderedAscending;
+    else if (y1 > y2)
+        return NSOrderedDescending;
+    else {
+        if (x1 < x2) return NSOrderedAscending;
+        else if(x1 > x2) return NSOrderedDescending;
+        else return NSOrderedSame;
+    }
+}
 
 - (id)initWithProfil:(Profil*)profil {
     self = [super init];
@@ -97,12 +114,14 @@ enum Relation {
 }
 - (NSArray*)profils {
     return [NSArray arrayWithArray:_profils];
+    //return [_profils sortedArrayUsingFunction:profilSort context:NULL];
 }
 
 - (int)checkConnect:(Profil*)profil {
-    int res = LEFT;
+    int res = RIGHT;
+    //NSArray *sorted = [_profils sortedArrayUsingFunction:profilSort context:NULL];
     int size = [_profils count];
-    if (size <= 0) return res;
+    if (size <= 0) return LEFT;
     // Compare the last profils in this blob
     for (int i = size-1; i>=0; --i) {
         Profil* curr = [_profils objectAtIndex:i];
@@ -111,8 +130,8 @@ enum Relation {
         if (curr.ox <= profil.ox+profil.width && profil.ox <= curr.ox+curr.width) {
             return CONNECT;
         }
-        else if (curr.ox > profil.ox+profil.width) {
-            res = RIGHT;
+        else if (profil.ox > curr.ox+curr.width) {
+            res = LEFT;
         }
     }
     return res;
@@ -299,12 +318,22 @@ enum Relation {
     // Draw Test Image
     CGContextDrawImage(ctxTest,CGRectMake(0,0,320,480),CGBitmapContextCreateImage(context));
     float rx = 320.0/_width, ry = 480.0/_height;
-    CGContextSetGrayStrokeColor(ctxTest, 0.5, 1);
     for (Blob* blob in _blobs) {
+        CGContextSetGrayStrokeColor(ctxTest, (float)random()/RAND_MAX, 1);
         CGRect box = [blob getBoundingBox];
         int w = box.size.width*rx, h = box.size.height*ry;
         int x = box.origin.x*rx, y = 480-box.origin.y*ry-h;
         CGContextStrokeRect(ctxTest, CGRectMake(x, y, w, h));
+        /*
+        NSArray *profils = [blob profils];
+        CGContextBeginPath (ctxTest);
+        for (Profil *p in profils) {
+            int y = 480-p.oy*ry;
+            CGContextMoveToPoint(ctxTest, p.ox*rx, y);
+            CGContextAddLineToPoint(ctxTest, (p.ox+p.width)*rx, y);
+        }
+        CGContextStrokePath(ctxTest);
+         */
     }
     
     imageRef = CGBitmapContextCreateImage(ctxTest);
