@@ -8,10 +8,17 @@
 
 #import "DataViewController.h"
 
+@interface DataViewController(internal)
+
+- (void)handleDoubleTap;
+
+@end
+
 @implementation DataViewController
 
 @synthesize imgView = _imgView;
 @synthesize img = _img;
+@synthesize page = _page;
 
 - (void)didReceiveMemoryWarning
 {
@@ -23,8 +30,9 @@
 
 - (void)viewDidLoad
 {
+    _img = [_page nextStep];
     _imgView = [[UIImageView alloc] initWithImage:_img];
-    _imgView.frame = CGRectMake(0, 0, 320, 480);
+    [self fitInScreen];
     [self.view addSubview:_imgView];
     [super viewDidLoad];
 }
@@ -59,6 +67,57 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+
+- (void)fitInScreen {
+    float rx = 320 / _img.size.width;
+    float ry = 480 / _img.size.height;
+    float r = (rx < ry) ? rx : ry;
+    int iw = _img.size.width * r;
+    int ih = _img.size.height * r;
+    int ix = (320-iw)/2;
+    int iy = (480-ih)/2;
+    _imgView.frame = CGRectMake(ix, iy, iw, ih);
+}
+
+
+#pragma mark - Touch event handling
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *aTouch = [touches anyObject];
+    if (aTouch.tapCount == 2) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *theTouch = [touches anyObject];
+    if (theTouch.tapCount == 1) {
+        NSDictionary *touchLoc = [NSDictionary dictionaryWithObject:
+                                  [NSValue valueWithCGPoint:[theTouch locationInView:_imgView]] forKey:@"location"];
+        [self performSelector:@selector(handleSingleTap:) withObject:touchLoc afterDelay:0.3];
+    }
+    else if (theTouch.tapCount == 2) {
+        [self handleDoubleTap];
+    }
+}
+
+- (void)handleSingleTap:(NSDictionary *)touches {
+    _img = [_page nextStep];
+    [_imgView setImage:_img];
+    [self fitInScreen];
+}
+- (void)handleDoubleTap {
+    _img = [_page prevStep];
+    [_imgView setImage:_img];
+    [self fitInScreen];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    /* no state to clean up, so null implementation */
 }
 
 @end

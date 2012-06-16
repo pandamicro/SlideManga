@@ -22,12 +22,12 @@
  */
 
 @interface ModelController()
-@property (readonly, strong, nonatomic) NSArray *images;
+@property (readonly, strong, nonatomic) NSArray *pages;
 @end
 
 @implementation ModelController
 
-@synthesize images = _images;
+@synthesize pages = _pages;
 
 - (id)init
 {
@@ -35,19 +35,18 @@
     if (self) {
         // Create the data model.
         //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        NSMutableArray *origins = [NSMutableArray arrayWithCapacity:10];
         NSMutableArray *data = [NSMutableArray arrayWithCapacity:10];
         for (int i = 0; i < 6; i++) {
             NSString *name = [NSString stringWithFormat:@"Unknown-%d.png", i];
-            [data addObject:[UIImage imageNamed:name]];
+            [origins addObject:[UIImage imageNamed:name]];
         }
         SimpleDivider* divider = [[SimpleDivider alloc] init];
-        MangaPage *page;
         for (int i = 0; i < 6; i++) {
-            page = [[MangaPage alloc] initWithUIImage:[data objectAtIndex:i] andDivider:divider];
-            [data replaceObjectAtIndex:i withObject:[page nextStep]];
+            [data addObject:[[MangaPage alloc] initWithUIImage:[origins objectAtIndex:i] andDivider:divider]];
         }
         
-        _images = [NSArray arrayWithArray:data];
+        _pages = [NSArray arrayWithArray:data];
     }
     return self;
 }
@@ -55,13 +54,13 @@
 - (DataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard
 {   
     // Return the data view controller for the given index.
-    if (([self.images count] == 0) || (index >= [self.images count])) {
+    if (([_pages count] == 0) || (index >= [_pages count])) {
         return nil;
     }
     
     // Create a new view controller and pass suitable data.
     DataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"DataViewController"];
-    dataViewController.img = [self.images objectAtIndex:index];
+    dataViewController.page = [_pages objectAtIndex:index];
     return dataViewController;
 }
 
@@ -71,7 +70,7 @@
      Return the index of the given data view controller.
      For simplicity, this implementation uses a static array of model objects and the view controller stores the model object; you can therefore use the model object to identify the index.
      */
-    return [self.images indexOfObject:viewController.img];
+    return [_pages indexOfObject:viewController.page];
 }
 
 #pragma mark - Page View Controller Data Source
@@ -95,7 +94,7 @@
     }
     
     index++;
-    if (index == [self.images count]) {
+    if (index == [_pages count]) {
         return nil;
     }
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];

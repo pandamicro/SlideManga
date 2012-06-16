@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MangaPage.h"
 
 @interface DataViewController : UIViewController
+
 @property (strong, nonatomic) IBOutlet UIImageView *imgView;
 @property (nonatomic, retain) UIImage *img;
+@property (nonatomic, retain) MangaPage *page;
+
+- (void)fitInScreen;
+
 @end

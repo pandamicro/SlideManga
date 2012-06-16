@@ -356,12 +356,12 @@ NSInteger profilSort(Profil* p1, Profil* p2, void *context)
     if([_blobs count] == 0 || _ratio <= 0)
         return [NSArray array];
     NSMutableArray* rois = [NSMutableArray arrayWithCapacity:[_blobs count]];
-    for(Blob* b in _blobs) {
-        CGRect box = [b getBoundingBox];
-        box.origin.x /= _ratio;
-        box.origin.y /= _ratio;
-        box.size.width /= _ratio;
-        box.size.width /= _ratio;
+    for(int i = 0; i < [_blobs count]; ++i) {
+        CGRect box = [[_blobs objectAtIndex:i] getBoundingBox];
+        box.origin.x = (box.origin.x-5) / _ratio - 20;
+        box.origin.y = (box.origin.y-5) / _ratio - 20;
+        box.size.width = box.size.width / _ratio + 40;
+        box.size.height = box.size.height / _ratio + 40;
         [rois addObject:[NSValue valueWithCGRect:box]];
     }
     return [NSArray arrayWithArray:rois];
