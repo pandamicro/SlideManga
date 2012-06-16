@@ -9,6 +9,7 @@
 #import "SimpleDivider.h"
 
 #define loop
+#define TEST
 
 enum Relation {
     LEFT = 1,
@@ -49,7 +50,6 @@ enum Relation {
 @private
     NSMutableArray* _profils;
     BOOL            _boxInvalid;
-    CGRect          _boundingBox;
 }
 
 @property BOOL connected;
@@ -92,7 +92,6 @@ NSInteger profilSort(Profil* p1, Profil* p2, void *context)
     self = [super init];
     if (self) {
         _boxInvalid = true;
-        _boundingBox = CGRectZero;
         _profils = [NSMutableArray arrayWithCapacity:300];
         [self addProfil:profil];
     }
@@ -170,6 +169,7 @@ NSInteger profilSort(Profil* p1, Profil* p2, void *context)
 }
 
 - (CGRect)getBoundingBox {
+    CGRect box = CGRectZero;
     if (_boxInvalid) {
         NSInteger minx = NSIntegerMax, maxx = NSIntegerMin, miny = NSIntegerMax, maxy = NSIntegerMin;
         for (Profil* p in _profils) {
@@ -178,9 +178,9 @@ NSInteger profilSort(Profil* p1, Profil* p2, void *context)
             if (p.ox+p.width > maxx) maxx = p.ox+p.width;
             if (p.oy > maxy) maxy = p.oy;
         }
-        _boundingBox = CGRectMake(minx, miny, maxx-minx, maxy-miny);
+        box = CGRectMake(minx, miny, maxx-minx, maxy-miny);
     }
-    return _boundingBox;
+    return box;
 }
 - (NSInteger)boundingBoxSurface {
     CGRect box = [self getBoundingBox];
@@ -202,15 +202,16 @@ NSInteger profilSort(Profil* p1, Profil* p2, void *context)
 @implementation SimpleDivider
 
 @synthesize resImage=_resImage;
+@synthesize blobs=_blobs;
 
 - (NSArray*)divide:(UIImage*)img{
     CGImageRef imageRef = [img CGImage];
     NSUInteger originW = CGImageGetWidth(imageRef);
     NSUInteger originH = CGImageGetHeight(imageRef);
     float surface = 800*600;
-    float r = sqrt(surface / (originW*originH));
-    _width = r * originW;
-    _height = r * originH;
+    _ratio = sqrt(surface / (originW*originH));
+    _width = _ratio * originW;
+    _height = _ratio * originH;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
     _bytesPerPixel = 1;
     _rawData = malloc(_height*_width*_bytesPerPixel);
@@ -302,7 +303,9 @@ NSInteger profilSort(Profil* p1, Profil* p2, void *context)
     
     // Analyse mark data to find out all the boundaries of manga bloc
     [self analyzeBoundaries];
-    
+
+#pragma Generation of test image
+#ifdef TEST
     // For test
     // Set all content pixel to black
     for (int row = 0; row < _height; ++row) {
@@ -333,20 +336,35 @@ NSInteger profilSort(Profil* p1, Profil* p2, void *context)
             CGContextAddLineToPoint(ctxTest, (p.ox+p.width)*rx, y);
         }
         CGContextStrokePath(ctxTest);
-         */
+        */
     }
     
     imageRef = CGBitmapContextCreateImage(ctxTest);
     _resImage = [UIImage imageWithCGImage:imageRef];
-    
+    CGContextRelease(ctxTest);
     CGImageRelease(imageRef);
     CGColorSpaceRelease(colorSpace);
-    CGContextRelease(ctxTest);
     CGContextRelease(context);
+#endif
     free(_rawData);
     free(_markData);
     
-    return NULL;
+    return [self getROIs];
+}
+
+- (NSArray*)getROIs {
+    if([_blobs count] == 0 || _ratio <= 0)
+        return [NSArray array];
+    NSMutableArray* rois = [NSMutableArray arrayWithCapacity:[_blobs count]];
+    for(Blob* b in _blobs) {
+        CGRect box = [b getBoundingBox];
+        box.origin.x /= _ratio;
+        box.origin.y /= _ratio;
+        box.size.width /= _ratio;
+        box.size.width /= _ratio;
+        [rois addObject:[NSValue valueWithCGRect:box]];
+    }
+    return [NSArray arrayWithArray:rois];
 }
 
 - (void)explorePixelAtRow:(int)row Col:(int)col From:(int)dir{

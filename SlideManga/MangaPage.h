@@ -21,8 +21,8 @@
 - (id)initWithImageNamed:(NSString*)name andDivider:(id<MangaDivider>)divider;
 
 // Manga reading process control
-- (CGRect)nextStep;
-- (CGRect)prevStep;
+- (UIImage*)nextStep;
+- (UIImage*)prevStep;
 - (void)rollback;
 
 @end

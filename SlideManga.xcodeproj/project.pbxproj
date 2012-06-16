@@ -18,6 +18,7 @@
 		BA94510514FADD36009356F2 /* MangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA94510214FADD36009356F2 /* MangaViewController.m */; };
 		BA94510614FADD36009356F2 /* MangaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA94510314FADD36009356F2 /* MangaViewController.xib */; };
 		BA94510714FADD36009356F2 /* MangaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA94510314FADD36009356F2 /* MangaViewController.xib */; };
+		BAAF07C3158CE7D7008A3A3A /* UIImageTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = BAAF07C2158CE7D7008A3A3A /* UIImageTransform.m */; };
 		BAE978CA14F549860004F99D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE978C914F549860004F99D /* UIKit.framework */; };
 		BAE978CC14F549860004F99D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE978CB14F549860004F99D /* Foundation.framework */; };
 		BAE978CE14F549860004F99D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAE978CD14F549860004F99D /* CoreGraphics.framework */; };
@@ -63,6 +64,8 @@
 		BA94510114FADD36009356F2 /* MangaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MangaViewController.h; sourceTree = "<group>"; };
 		BA94510214FADD36009356F2 /* MangaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MangaViewController.m; sourceTree = "<group>"; };
 		BA94510314FADD36009356F2 /* MangaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MangaViewController.xib; sourceTree = "<group>"; };
+		BAAF07C1158CE7D7008A3A3A /* UIImageTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageTransform.h; sourceTree = "<group>"; };
+		BAAF07C2158CE7D7008A3A3A /* UIImageTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageTransform.m; sourceTree = "<group>"; };
 		BAE978C514F549860004F99D /* SlideManga.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlideManga.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE978C914F549860004F99D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BAE978CB14F549860004F99D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -171,6 +174,8 @@
 				BA92A89C14FC4B0A00B95BA8 /* SimpleDivider.m */,
 				BA9450F314FAB3A0009356F2 /* MangaPage.h */,
 				BA9450F414FAB3A0009356F2 /* MangaPage.m */,
+				BAAF07C1158CE7D7008A3A3A /* UIImageTransform.h */,
+				BAAF07C2158CE7D7008A3A3A /* UIImageTransform.m */,
 				BA94510114FADD36009356F2 /* MangaViewController.h */,
 				BA94510214FADD36009356F2 /* MangaViewController.m */,
 				BA94510314FADD36009356F2 /* MangaViewController.xib */,
@@ -344,6 +349,7 @@
 				BA9450F514FAB3A0009356F2 /* MangaPage.m in Sources */,
 				BA94510414FADD36009356F2 /* MangaViewController.m in Sources */,
 				BA92A89D14FC4B0A00B95BA8 /* SimpleDivider.m in Sources */,
+				BAAF07C3158CE7D7008A3A3A /* UIImageTransform.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

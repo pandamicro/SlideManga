@@ -7,7 +7,7 @@
 //
 
 #import "MangaPage.h"
-#import "ROIDescriptor.h"
+#import "UIImageTransform.h"
 
 @implementation MangaPage
 
@@ -37,13 +37,17 @@
 }
 
 #pragma mark - Process control
-- (CGRect)nextStep{
+- (UIImage*)nextStep{
+    if([_regions count] == 0) return NULL;
+    CGRect roi = [[_regions objectAtIndex:_curr] CGRectValue];
     if(_curr < [_regions count]-1) _curr++;
-    return [(ROIDescriptor*)[_regions objectAtIndex:_curr] getBoundingBox];
+    return [_img getSubImage:roi];
 }
-- (CGRect)prevStep{
+- (UIImage*)prevStep{
+    if([_regions count] == 0) return NULL;
+    CGRect roi = [[_regions objectAtIndex:_curr] CGRectValue];
     if(_curr > 0) _curr--;
-    return [(ROIDescriptor*)[_regions objectAtIndex:_curr] getBoundingBox];
+    return [_img getSubImage:roi];
 }
 - (void)rollback{
     _curr = 0;

@@ -24,6 +24,7 @@
 - (void)viewDidLoad
 {
     _imgView = [[UIImageView alloc] initWithImage:_img];
+    _imgView.frame = CGRectMake(0, 0, 320, 480);
     [self.view addSubview:_imgView];
     [super viewDidLoad];
 }

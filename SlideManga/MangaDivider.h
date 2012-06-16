@@ -11,5 +11,9 @@
 @protocol MangaDivider <NSObject>
 
 - (NSArray*)divide:(UIImage*)img;
+- (NSArray*)getROIs;
+
+@property(nonatomic, retain) UIImage* resImage;
+@property(nonatomic, retain) NSArray* blobs;
 
 @end

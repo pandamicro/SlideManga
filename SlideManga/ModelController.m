@@ -7,7 +7,6 @@
 //
 
 #import "ModelController.h"
-
 #import "DataViewController.h"
 
 #import "MangaPage.h"
@@ -45,7 +44,7 @@
         MangaPage *page;
         for (int i = 0; i < 6; i++) {
             page = [[MangaPage alloc] initWithUIImage:[data objectAtIndex:i] andDivider:divider];
-            [data replaceObjectAtIndex:i withObject:divider.resImage];
+            [data replaceObjectAtIndex:i withObject:[page nextStep]];
         }
         
         _images = [NSArray arrayWithArray:data];

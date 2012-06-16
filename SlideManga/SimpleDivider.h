@@ -13,12 +13,10 @@
 @private
     NSUInteger _width;
     NSUInteger _height;
+    float _ratio;
     NSUInteger _bytesPerPixel;
     unsigned char* _rawData;
     bool* _markData;
-    NSArray* _blobs;
 }
-
-@property(nonatomic, retain) UIImage* resImage;
 
 @end
